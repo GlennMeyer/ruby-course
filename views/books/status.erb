@@ -1,0 +1,37 @@
+<div style="float:right">
+	<div>
+		<a href="/">Home</a>
+	</div>
+	<div>
+		<a href="/users">Manage Users</a>
+	</div>
+	<div>
+		<a href="/books">Manage Books</a>
+	</div>
+	<div>
+		<a href="/status">Book Status</a>
+	</div>
+<!-- 	<div>
+		<a href="/checkout">Checkout Book</a>
+	</div> -->
+</div>
+
+<h1>Book Status:</h1>
+<table>
+	<tr>
+		<th>Book Title:</th>
+		<th>Current Status:</th>
+		<th>Borrower Name:</th>
+		<th>Timestamp:</th>
+	</tr>
+<% if @status %>	
+  <tr><td><strong><%= @status.first['title'] %></strong></td><td><%= @status.first['status'] %></td><td><%= @status.first['name'] %></td><td><%= @status.first['created_at'] %></td></tr>
+<% end %>
+</table>
+
+<!-- <form method="POST" action="/bookstatus">
+  <h3>Book Status</h3>
+  <label>ID:</label>
+  <input type="text" name="book_id" />
+  <input type="submit" value="submit" />
+</form> -->

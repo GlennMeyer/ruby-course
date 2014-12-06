@@ -1,0 +1,31 @@
+<div style="float:right">
+	<div>
+		<a href="/">Home</a>
+	</div>
+	<div>
+		<a href="/users">Manage Users</a>
+	</div>
+	<div>
+		<a href="/books">Manage Books</a>
+	</div>
+	<div>
+		<a href="/status">Book Status</a>
+	</div>
+<!-- 	<div>
+		<a href="/checkout">Checkout Book</a>
+	</div> -->
+</div>
+
+<h1>All Users:</h1>
+<ul>
+<% @users.each do |user| %>
+	<li><strong><%= user['id'] %></strong> - <%= user['name'] %></li>
+<% end %>
+</ul>
+
+<form method="POST" action="/users">
+  <h3>Register New User</h3>
+  <label>Name:</label>
+  <input type="text" name="user_name" />
+  <input type="submit" value="submit" />
+</form>

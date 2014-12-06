@@ -1,0 +1,32 @@
+<div style="float:right">
+	<div>
+		<a href="/">Home</a>
+	</div>
+	<div>
+		<a href="/users">Manage Users</a>
+	</div>
+	<div>
+		<a href="/books">Manage Books</a>
+	</div>
+	<div>
+		<a href="/status">Book Status</a>
+	</div>
+<!-- 	<div>
+		<a href="/checkout">Checkout Book</a>
+	</div> -->
+</div>
+<h3><%= @book.first['title'] %></h3>
+<p><em><%= @book.first['author'] %></em></p>
+
+<a href="/books/<%= @id %>/status">status</a>
+
+<form action="/books/<%= @id %>/checkout" method="POST">
+	<label>Checkout:</label>
+	<select name="user_id">
+		<% @users.each do |user| %>
+		<option value="<%= user['id'] %>"> <%= user['name'] %> </option>
+		<% end %>
+	</select>
+	<input type="submit" value="submit">
+</form>
+
