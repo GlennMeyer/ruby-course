@@ -8,19 +8,17 @@
   <div>
     <a href="/books">Manage Books</a>
   </div>
-  <div>
-    <a href="/status">Book Status</a>
-  </div>
-<!--  <div>
-    <a href="/checkout">Checkout Book</a>
-  </div> -->
 </div>
 
 <h1>All Books:</h1>
 <table>
-<% @books.each do |book| %>
-	<tr><td><a href="/books/<%= book['id']%>"><%= book['title'] %></a></td><td><em><%= book['author'] %></em></tr>
-<% end %>
+  <tr>
+    <th>Book Title:</th>
+    <th>Author:</th>
+  </tr>
+  <% @books.each do |book| %>  
+    <tr><td><a href="/books/<%= book['id'] %>"><%= book['title'] %></a></td><td><%= book['author'] %></td></tr>
+  <% end %>
 </table>
 
 <form method="POST" action="/books">

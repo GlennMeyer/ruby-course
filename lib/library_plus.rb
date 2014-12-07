@@ -10,6 +10,7 @@ module Library
       DELETE FROM users;
       /* TODO: Clear rest of the tables (books, etc.) */
       DELETE FROM books;
+      DELETE FROM checkouts;
     SQL
   end
 
@@ -39,6 +40,7 @@ module Library
       DROP TABLE users;
       /* TODO: Drop rest of the tables (books, etc.) */
       DROP TABLE books;
+      DROP TABLE checkouts;
     SQL
   end
 end

@@ -3,7 +3,7 @@ module Library
     def self.all(db)
       # Other code should not have to deal with the PG:Result.
       # Therefore, convert the results into a plain array.
-      db.exec("SELECT * FROM users;").to_a
+      db.exec("SELECT id, name FROM users ORDER BY id ASC;").to_a
     end
 
     def self.find(db, user_id)
