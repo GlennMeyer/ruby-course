@@ -6,10 +6,19 @@ module Library
       db.exec("SELECT id, name FROM users ORDER BY id ASC;").to_a
     end
 
+    def self.destroy(db, user_id)
+      # TODO: Delete SQL statement
+      db.exec("DELETE FROM users WHERE id = $1", [user_id])
+    end
+
     def self.find(db, user_id)
       # TODO: Insert SQL statement
       result = db.exec("SELECT * FROM users WHERE id = $1;", [user_id])
       result.first
+    end
+
+    def self.history(db, user_id)
+      db.exec("SELECT * FROM checkouts c JOIN books b ON b.id = c.book_id WHERE c.user_id = $1 ORDER BY c.created_at DESC;", [user_id])
     end
 
     def self.save(db, user_data)
@@ -22,11 +31,6 @@ module Library
       end
       result = db.exec("SELECT * FROM users WHERE name = $1;", [user_data['name']])
       result.first
-    end
-
-    def self.destroy(db, user_id)
-      # TODO: Delete SQL statement
-      db.exec("DELETE FROM users WHERE id = $1", [user_id])
     end
   end
 end

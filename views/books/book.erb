@@ -7,7 +7,7 @@
 <h3><%= @book.first['title'] %></h3>
 <p><em><%= @book.first['author'] %></em></p>
 
-<p><a href="/books/<%= @id %>/status">Status:</a><%= @status.first['status'] == 'checked_out' ? '  checked out' : '  available' %></p>
+<p><strong>Status:</strong><em><%= @status.first['status'] == 'checked_out' ? '  checked out' : '  available' %></em></p>
 
 <% if @status.first['status'] == 'available' || @status.first['status'] == 'returned'%>
 	<form action="/books/<%= @id %>/checkout" method="POST">
@@ -23,3 +23,5 @@
 		<input type="submit" value="checkin">
 	</form>
 <% end %>
+
+<p><a href="/books/<%= @id %>/history">Checkout History</a></p>

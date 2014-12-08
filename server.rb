@@ -20,6 +20,12 @@ post '/users' do
   redirect to('/users')
 end
 
+get '/users/:id' do # User checkout history
+  db = Library.create_db_connection('library_test')
+  @history = Library::UserRepo.history(db, params[:id])
+  erb :"users/user"
+end
+
 get '/books' do
   db = Library.create_db_connection('library_test')
   @books = Library::BookRepo.all(db)
@@ -47,17 +53,17 @@ end
 post '/books/:id/checkin' do
   db = Library.create_db_connection('library_test')
   Library::BookRepo.checkin(db, params[:id])
-  redirect to("/books/#{params[:id]}/status")
+  redirect to("/books/#{params[:id]}/history")
 end
 
 post '/books/:id/checkout' do
   db = Library.create_db_connection('library_test')
   Library::BookRepo.checkout(db, {'user_id' => params[:user_id], 'book_id' => params[:id]})
-  redirect to("/books/#{params[:id]}/status")
+  redirect to("/books/#{params[:id]}/history")
 end
 
-get '/books/:id/status' do
+get '/books/:id/history' do
   db = Library.create_db_connection('library_test')
-  @status = Library::BookRepo.status(db, params[:id])
-  erb :"books/status"
+  @history = Library::BookRepo.history(db, params[:id])
+  erb :"books/history"
 end

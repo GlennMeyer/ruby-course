@@ -1,0 +1,18 @@
+<div style="float:right">
+	<a href="/">Home</a> | 
+	<a href="/users">Manage Users</a> | 
+	<a href="/books">Manage Books</a>
+</div>
+
+<h1>Book Checkout History:</h1>
+<table>
+	<tr>
+		<th>Book Title:</th>
+		<th>Status:</th>
+		<th>Timestamp:</th>
+		<th>Borrower:</th>
+	</tr>
+<% @history.each do |book| %>	
+  <tr><td><a href="/books/<%= book['id']%>"><%= book['title'] %></a></td><td><%= book['status'] %></td><td><%= book['created_at'] %></td><td><%= book['name'] %></td></tr>
+<% end %>
+</table>

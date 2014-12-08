@@ -1,0 +1,13 @@
+<div style="float:right">
+	<a href="/">Home</a> | 
+	<a href="/users">Manage Users</a> | 
+	<a href="/books">Manage Books</a>
+</div>
+
+<h3>User Checkout History:</h3>
+<table>
+	<tr><th>Book Title:</th><th>Status:</th><th>Timestamp:</th></tr>
+	<% @history.each do |rental|%>
+	<tr><td><a href="/books/<%= rental['book_id'] %>"><%= rental['title'] %></a></td><td><%= rental['status'] %></td><td><%= rental['created_at'] %></td></tr>
+	<% end %>
+</table>

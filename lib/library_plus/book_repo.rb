@@ -21,6 +21,10 @@ module Library
       db.exec("SELECT * FROM books WHERE id = $1;", [book_id])
     end
 
+    def self.history(db, book_id)
+      db.exec("SELECT b.title, b.id, c.status, c.created_at, u.name FROM checkouts c JOIN books b ON c.book_id = b.id JOIN users u ON u.id = c.user_id WHERE c.book_id = $1 ORDER BY c.created_at DESC;", [book_id])
+    end
+
     def self.return(db, book_id)
       db.exec("UPDATE checkouts SET status = returned WHERE id = $1;", [book_id])
     end
@@ -34,11 +38,7 @@ module Library
     end
 
     def self.status(db, book_id = nil)
-      if book_id
-        db.exec("SELECT b.title, c.status, c.created_at FROM checkouts c JOIN books b ON c.book_id = b.id WHERE c.book_id = $1 ORDER BY c.created_at DESC;", [book_id])
-      else
-        db.exec("SELECT b.id, b.title, c.status, c.created_at FROM checkouts c JOIN books b ON c.book_id = b.id ORDER BY c.created_at;")
-      end
+      db.exec("SELECT b.title, c.status, c.created_at, b.id FROM checkouts c JOIN books b ON c.book_id = b.id WHERE c.book_id = $1 ORDER BY c.created_at DESC;", [book_id])
     end
   end
 end
