@@ -127,8 +127,6 @@ put '/shops/:shop_id/cats/:id/adopt' do
   cat.shop_id = shop_id
   cat.owner_id = owner_id
   save = cat.save
-
-  save.to_json
 end
 
 
@@ -161,6 +159,4 @@ put '/shops/:shop_id/dogs/:id/adopt' do
   dog.shop_id = shop_id
   dog.owner_id = owner_id
   save = dog.save
-
-  save.to_json
 end
