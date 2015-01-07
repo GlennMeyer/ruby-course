@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   validates :username, :presence => true
+  validates :username, length: { in: 4..12 }
   validates :password, :presence => true
-  validates :password, confirmation: true
+  validates_format_of :password, with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{6,}\z/, message: "must contain one lowercase letter, one uppercase, and one number"
 end
 
 class Dog < ActiveRecord::Base

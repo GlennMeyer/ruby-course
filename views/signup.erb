@@ -1,0 +1,16 @@
+<center>
+	<div>
+		<form method='post' action='/signup'>
+			<label>Username:</label><br>
+			<input type='text' name='username' /><br>
+			<label>Password:</label><br>
+			<input type='password' name='password' /><br>
+			<label>Confirm Password:</label><br>
+			<input type='password' name='confirmation' /><br>
+			<input type='submit'>
+		</form>
+		<span class='errors'>
+			 <%= flash[:error] if flash[:error] %>
+		</span>
+	</div>
+</center>
