@@ -128,6 +128,7 @@ put '/shops/:shop_id/cats/:id/adopt' do
   cat.owner_id = owner_id
   save = cat.save
 
+  save.to_json
 end
 
 
@@ -138,6 +139,7 @@ get '/shops/:id/dogs' do
   headers['Content-Type'] = 'application/json'
   id = params[:id]
 
+  # Dog.connection
   dogs = Dog.all
   data = dogs.where("shop_id = #{id}").as_json
   
@@ -159,4 +161,6 @@ put '/shops/:shop_id/dogs/:id/adopt' do
   dog.shop_id = shop_id
   dog.owner_id = owner_id
   save = dog.save
+
+  save.to_json
 end
