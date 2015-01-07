@@ -1,5 +1,5 @@
 require 'active_record_tasks'
-require_relative 'server.rb'
+# require_relative 'server.rb'
 
 ActiveRecordTasks.configure do |config|
   config.db_dir = 'db'

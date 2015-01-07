@@ -1,11 +1,11 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/flash'
-require 'rest-client'
-require 'json'
-require './lib/petshop.rb'
+# require 'rest-client'
+# require 'json'
+# require './lib/petshop.rb'
 require './config/environments.rb'
-require './lib/models/user.rb'
+# require './lib/models/user.rb'
 
 # #
 # This is our only html view...
@@ -19,19 +19,12 @@ end
 get '/' do
   if session[:user_id]
 
-    User.connection
     users = User.all
     users.find_by(id: session[:user_id]).as_json
   end
 
   erb :index
 end
-
-##### I think we can comment this out #####
-# def mydb
-#   Petshops.create_db_connection('petserver')
-# end
-###########################################
 
 # #
 # ...the rest are JSON endpoints
@@ -40,7 +33,6 @@ get '/shops' do
 
   headers['Content-Type'] = 'application/json'
 
-  Shop.connection
   shops = Shop.all
   shops.to_json
 end
@@ -48,19 +40,15 @@ end
 post '/signin' do
   params = JSON.parse request.body.read
 
-  username = params['username']
-  password = params['password']
-
-  User.connection
   users = User.all
-  creds = users.find_by(username: username).as_json
+  creds = users.find_by(username: params['username']).as_json
 
-  if creds['password'] == password
+  if creds['password'] == params['password']
     headers['Content-Type'] = 'application/json'
 
     session[:user_id] = creds['id']
+    creds.delete('password')
 
-    Cat.connection
     cats = Cat.all
     cats = cats.where("owner_id = #{session[:user_id]}").as_json
 
@@ -70,7 +58,6 @@ post '/signin' do
       creds['cats'] << {shopid: cat['shop_id'], name: cat['name'], imageUrl: cat['image_url'], adopted: true, id: cat['id']}
     end
 
-    Dog.connection
     dogs = Dog.all
     dogs = dogs.where("owner_id = #{session[:user_id]}").as_json
 
@@ -79,7 +66,7 @@ post '/signin' do
       creds['dogs'] << {shopid: dog['shop_id'], name: dog['name'], imageUrl: dog['image_url'], adopted: true, id: dog['id']}
     end
 
-    JSON.generate(creds)
+    creds.to_json
   else
     status 401
   end
@@ -93,7 +80,6 @@ get '/signup' do
 end
 
 post '/signup' do
-  User.connection
 
   if params['password'] == params['confirmation']
     user = User.new
@@ -106,6 +92,7 @@ post '/signup' do
     flash[:error] = user.errors.to_a.join(".  ")
     redirect to('/signup')
   else
+    session[:user_id] = user.id
     redirect to('/')
   end
 end
@@ -119,7 +106,6 @@ get '/shops/:id/cats' do
   headers['Content-Type'] = 'application/json'
   id = params[:id]
 
-  Cat.connection
   cats = Cat.all
   data = cats.where("shop_id = #{id}").as_json
 
@@ -136,14 +122,12 @@ put '/shops/:shop_id/cats/:id/adopt' do
   id = params[:id]
   owner_id = session[:user_id]
 
-  Cat.connection
   cats = Cat.all
   cat = cats.find_by( id: id )
   cat.shop_id = shop_id
   cat.owner_id = owner_id
   save = cat.save
 
-  save.to_json
 end
 
 
@@ -154,15 +138,12 @@ get '/shops/:id/dogs' do
   headers['Content-Type'] = 'application/json'
   id = params[:id]
 
-  Dog.connection
   dogs = Dog.all
   data = dogs.where("shop_id = #{id}").as_json
   
   data.each do |line|
     line['adopted'] = (line['adopted'] == 't' ? true : false)
   end
-
-  JSON.generate(data)
 
   data.to_json
 end
@@ -173,18 +154,9 @@ put '/shops/:shop_id/dogs/:id/adopt' do
   id = params[:id]
   owner_id = session[:user_id]
 
-  Dog.connection
   dogs = Dog.all
   dog = dogs.find_by( id: id)
   dog.shop_id = shop_id
   dog.owner_id = owner_id
   save = dog.save
-
-  JSON.generate(Petshops::DogRepo.save(mydb, {
-      'id' => id,
-      'shop_id' => shop_id,
-      'owner_id' => owner_id
-    }))
-
-  save.to_json
 end
